@@ -10,14 +10,14 @@ const AppRouter = observer(() => {
 
     console.log(user)
     return (
-        <Switch>
+        <Switch> //
             {user.isAuth && authRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
             {publicRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
-            <Redirect to={SHOP_ROUTE}/>
+            <Redirect to={SHOP_ROUTE}/>// при неправильній силці поверне нацю /
         </Switch>
     );
 });

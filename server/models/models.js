@@ -9,7 +9,14 @@ const User = sequelize.define('user', {
     email: {type: DataTypes.STRING, unique: true,},
     password: {type: DataTypes.STRING},
     role: {type: DataTypes.STRING, defaultValue: "USER"},
-    userName: {type: DataTypes.STRING},
+    // userName: {type: DataTypes.STRING},
+})
+
+const UserInfo = sequelize.define('user_info', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    userName: {type: DataTypes.STRING, allowNull: false},
+    age: {type: DataTypes.INTEGER},
+    gender: {type: DataTypes.STRING},
 })
 
 const Basket = sequelize.define('basket', {
@@ -79,20 +86,31 @@ Rating.belongsTo(Device)
 Device.hasMany(BasketDevice)
 BasketDevice.belongsTo(Device)
 
+User.hasOne(UserInfo)
+UserInfo.belongsTo(User)
+
+
+
 Device.hasMany(DeviceInfo, {as: 'info'});
 DeviceInfo.belongsTo(Device)
 
-Device.hasMany(Reviews, {as: 'listReviews'});
+Device.hasMany(Reviews,  {as: 'listReviews'});
 Reviews.belongsTo(Device)
 
-User.hasMany(Reviews, {as: 'listReviews'});
-Reviews.belongsTo(User)
+Device.hasMany(UserInfo, {as: 'listUser'});
+UserInfo.belongsTo(Device)
+
+// UserInfo.hasMany(Reviews, {as: 'listUser'});
+// Reviews.belongsTo(UserInfo)
+
+
 
 Type.belongsToMany(Brand, {through: TypeBrand })
 Brand.belongsToMany(Type, {through: TypeBrand })
 
 module.exports = {
     User,
+    UserInfo,
     Basket,
     BasketDevice,
     Device,

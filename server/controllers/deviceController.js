@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path');
-const {Device, DeviceInfo, Reviews, User} = require('../models/models')
+const {Device, DeviceInfo, Reviews, UserInfo, Basket} = require('../models/models')
 const ApiError = require('../error/ApiError');
 const {where} = require("sequelize");
 class DeviceController {
@@ -57,7 +57,7 @@ class DeviceController {
             {
                 where: {id},
                 include: [{model: DeviceInfo, as: 'info'}, {model: Reviews,  as: 'listReviews'},
-
+                {model: UserInfo,  as: 'listUser'},
                 ]
 
             });
@@ -65,11 +65,21 @@ class DeviceController {
     }
 
     async createReview (req, res, next) {
-        let {review, userId, deviceId} = req.body
-        const DevReview = await Reviews.create({review, userId, deviceId});
+        let {review, userId} = req.body
+        const {id} = req.params
+        const DevReview = await Reviews.create({review, userId, deviceId: id});
         return res.json(DevReview)
 
     }
+    async addBasket (req, res) {
+        let {userId} = req.body
+        const {id} = req.params
+        const AddBasket = await Basket.create({userId, deviceId: id});
+        return res.json(AddBasket)
+
+    }
+
+
 }
 
 module.exports = new DeviceController()
