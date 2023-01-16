@@ -89,6 +89,9 @@ BasketDevice.belongsTo(Device)
 User.hasOne(UserInfo)
 UserInfo.belongsTo(User)
 
+User.hasOne(Reviews)
+Reviews.belongsTo(User)
+
 
 
 Device.hasMany(DeviceInfo, {as: 'info'});

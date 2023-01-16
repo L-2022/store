@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path');
-const {Device, DeviceInfo, Reviews, UserInfo, Basket} = require('../models/models')
+const {Device, DeviceInfo, Reviews, UserInfo, BasketDevice} = require('../models/models')
 const ApiError = require('../error/ApiError');
 const {where} = require("sequelize");
 class DeviceController {
@@ -71,10 +71,11 @@ class DeviceController {
         return res.json(DevReview)
 
     }
-    async addBasket (req, res) {
+
+    async addBasket (req, res, next) {
         let {userId} = req.body
         const {id} = req.params
-        const AddBasket = await Basket.create({userId, deviceId: id});
+        const AddBasket = await BasketDevice.create({basketId: userId, deviceId: id});
         return res.json(AddBasket)
 
     }
