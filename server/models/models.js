@@ -59,6 +59,7 @@ const DeviceInfo = sequelize.define('device_info', {
 const Reviews = sequelize.define('reviews', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     review: {type: DataTypes.STRING},
+    username: {type: DataTypes.STRING},
 })
 //////
 const TypeBrand = sequelize.define('type_brand', {
@@ -89,6 +90,9 @@ BasketDevice.belongsTo(Device)
 User.hasOne(UserInfo)
 UserInfo.belongsTo(User)
 
+User.hasOne(Reviews)
+Reviews.belongsTo(User)
+
 
 
 Device.hasMany(DeviceInfo, {as: 'info'});
@@ -96,14 +100,6 @@ DeviceInfo.belongsTo(Device)
 
 Device.hasMany(Reviews,  {as: 'listReviews'});
 Reviews.belongsTo(Device)
-
-Device.hasMany(UserInfo, {as: 'listUser'});
-UserInfo.belongsTo(Device)
-
-// UserInfo.hasMany(Reviews, {as: 'listUser'});
-// Reviews.belongsTo(UserInfo)
-
-
 
 Type.belongsToMany(Brand, {through: TypeBrand })
 Brand.belongsToMany(Type, {through: TypeBrand })

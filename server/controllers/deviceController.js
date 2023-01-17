@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path');
-const {Device, DeviceInfo, Reviews, UserInfo, Basket} = require('../models/models')
+const {Device, DeviceInfo, Reviews, UserInfo, BasketDevice, User} = require('../models/models')
 const ApiError = require('../error/ApiError');
 const {where} = require("sequelize");
 class DeviceController {
@@ -56,8 +56,8 @@ class DeviceController {
         const device = await Device.findOne(
             {
                 where: {id},
-                include: [{model: DeviceInfo, as: 'info'}, {model: Reviews,  as: 'listReviews'},
-                {model: UserInfo,  as: 'listUser'},
+                include: [{model: DeviceInfo, as: 'info'},
+                          {model: Reviews,  as: 'listReviews'},
                 ]
 
             });
@@ -67,14 +67,21 @@ class DeviceController {
     async createReview (req, res, next) {
         let {review, userId} = req.body
         const {id} = req.params
-        const DevReview = await Reviews.create({review, userId, deviceId: id});
+        const usersNames = await UserInfo.findAndCountAll({where:{id: userId }})
+        const ElementUsersName = usersNames.rows.map((info) => {
+            return info.userName
+        });
+        var UserName = [...ElementUsersName].shift();
+        const DevReview = await Reviews.create({review, username: UserName, deviceId: id});
+
         return res.json(DevReview)
 
     }
-    async addBasket (req, res) {
+
+    async addBasket (req, res, next) {
         let {userId} = req.body
         const {id} = req.params
-        const AddBasket = await Basket.create({userId, deviceId: id});
+        const AddBasket = await BasketDevice.create({basketId: userId, deviceId: id});
         return res.json(AddBasket)
 
     }

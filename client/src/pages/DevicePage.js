@@ -2,15 +2,26 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
 import bigStar from '../assets/bigStar.png'
 import {useParams} from 'react-router-dom'
-import {fetchOneDevice} from "../http/deviceAPI";
+import {fetchOneDevice, fetchReviews} from "../http/deviceAPI";
+import ListReviews from "../components/ListReviews";
+
 
 const DevicePage = () => {
-    const [device, setDevice] = useState({info: []})
+    const [device,  setDevice] = useState({info: []},)
+    console.log(device.info)
+    // console.log(device.listReviews)
+    // const [reviews, setDevice] = useState({listReviews: []})
     const {id} = useParams()
     useEffect(() => {
         fetchOneDevice(id).then(data => setDevice(data))
     }, [])
 
+    // const [reviews, setReviews] = useState({listReviews: []})
+    //
+    //    useEffect(() => {
+    //     fetchReviews(reviews).then(data => setReviews(data))
+    // }, [])
+    // console.log(reviews.listReviews)
     return (
         <Container className="mt-4">
             <Row>
@@ -40,8 +51,20 @@ const DevicePage = () => {
                     </Row>
                 )}
             </Row>
+            <ListReviews/>
+            {/*<Row className="d-flex flex-column m-3">*/}
+            {/*    <h1>Відгуки</h1>*/}
+            {/*    {reviews.listReviews.map((info, index) =>*/}
+            {/*        <Row key={info.id} style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding: 10}}>*/}
+            {/*            {info.userId}: {info.review}*/}
+            {/*        </Row>*/}
+            {/*    )}*/}
+            {/*</Row>*/}
         </Container>
     );
 };
 
 export default DevicePage;
+
+
+

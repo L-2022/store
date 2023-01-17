@@ -13,6 +13,10 @@ export default class DeviceStore {
         makeAutoObservable(this)
     }
 
+    // setReviews(devices) {
+    //     this._devices = devices
+    // }
+
     setTypes(types) {
         this._types = types
     }
@@ -22,6 +26,7 @@ export default class DeviceStore {
     setDevices(devices) {
         this._devices = devices
     }
+
 
     setSelectedType(type) {
         this.setPage(1)
