@@ -37,3 +37,13 @@ export const fetchOneDevice = async (id) => {
     const {data} = await $host.get('api/device/' + id)
     return data
 }
+
+export const fetchReviews = async (id) => {
+    const {data} = await $host.get('api/device/' + id)
+    return data
+}
+
+export const createReview = async (review, id) => {
+    const {data} = await $authHost.post('api/device/' + id, review)
+    return data
+}
