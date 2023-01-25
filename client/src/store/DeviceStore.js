@@ -5,6 +5,7 @@ export default class DeviceStore {
         this._types = []
         this._brands = []
         this._devices = []
+        this._reviews = []
         this._selectedType = {}
         this._selectedBrand = {}
         this._page = 1
@@ -13,9 +14,9 @@ export default class DeviceStore {
         makeAutoObservable(this)
     }
 
-    // setReviews(devices) {
-    //     this._devices = devices
-    // }
+    setReviews(reviews) {
+        this._reviews = reviews
+    }
 
     setTypes(types) {
         this._types = types
@@ -27,20 +28,26 @@ export default class DeviceStore {
         this._devices = devices
     }
 
-
     setSelectedType(type) {
         this.setPage(1)
         this._selectedType = type
     }
+
     setSelectedBrand(brand) {
         this.setPage(1)
         this._selectedBrand = brand
     }
+
     setPage(page) {
         this._page = page
     }
+
     setTotalCount(count) {
         this._totalCount = count
+    }
+
+    get reviews() {
+        return this._reviews
     }
 
     get types() {

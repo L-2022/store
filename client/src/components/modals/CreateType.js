@@ -8,6 +8,8 @@ const CreateType = ({show, onHide}) => {
 
     const addType = () => {
         createType({name: value}).then(data => {
+            console.log(data)
+            console.log(value)
             setValue('')
             onHide()
         })

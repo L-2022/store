@@ -43,12 +43,14 @@ const Auth = observer(() => {
             <Card style={{width: 550}} className="p-5">
                 <h2 className="m-auto">{isLogin ? 'Авторизація' : "Реєстрація"}</h2>
                 <Form className="d-flex flex-column">
-                    <Form.Control
-                        className="mt-3"
-                        placeholder="Введіть ваше ім'я..."
-                        value={userName}
-                        onChange={e => setUserName(e.target.value)}
-                    />
+                    {isLogin ? "":
+                        <Form.Control
+                            className="mt-3"
+                            placeholder="Введіть ваше ім'я..."
+                            value={userName}
+                            onChange={e => setUserName(e.target.value)}
+                        />
+                    }
 
                     <Form.Control
                         className="mt-3"

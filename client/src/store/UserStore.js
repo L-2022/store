@@ -19,9 +19,9 @@ export default class UserStore {
         this._user = user
     }
 
-    // setBasket(basket) { // ekhen
-    //     this._baskets = basket
-    // }
+    setBasket(basket) {
+        this._baskets = basket
+    }
 
     get baskets() {
         return this._baskets

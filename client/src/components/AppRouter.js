@@ -8,7 +8,7 @@ import {observer} from "mobx-react-lite";
 const AppRouter = observer(() => {
     const {user} = useContext(Context)
 
-    console.log(user)
+
     return (
         <Switch> //
             {user.isAuth && authRoutes.map(({path, Component}) =>
@@ -17,7 +17,7 @@ const AppRouter = observer(() => {
             {publicRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
-            <Redirect to={SHOP_ROUTE}/>// при неправильній силці поверне нацю /
+            <Redirect to={SHOP_ROUTE}/>
         </Switch>
     );
 });
