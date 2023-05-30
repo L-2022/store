@@ -1,29 +1,36 @@
 import React, {useState, useContext} from 'react';
 import {Button, Form} from "react-bootstrap";
-import {useParams} from "react-router-dom";
+import {useParams, } from "react-router-dom";
 import {createReview} from "../../http/deviceAPI";
 
 const CreateReviews = () => {
+    const [Review, setReview] = useState('fgd2')
 
-    const [value, setReviews] = useState('')
-    const {id} = useParams()
-    console.log(id)
-    console.log(value)
+    // const {userId} = useParams()
+    const id = {"id": 1}
+
+
+    // console.log(id)
+    // console.log(value)
     const addReview = () => {
-        const formData = new FormData()
-        formData.append('review', value)
-        formData.append('userId', id)
-        console.log(formData)
-        createReview(formData)
+        // const formData = new FormData()
+        // formData.append('review', value,'userId', id)
+        // // formData.append('userId', id)
+        // console.log(formData)
+        console.log(Review)
+        console.log(id)
+        // console.log(userId)
+        // createReview(formData)
+        createReview({deviceId: id, userId: id, Review})
     }
 
 
     return (
                 <Form>
                     <Form.Control
-
-                        // onChange={e => setReviews(e.target.value)}
-                        placeholder={"Відгук"}
+                        value={Review}
+                        onChange={e => setReview(e.target.value)}
+                        placeholder={"Введіть ваш відгук"}
                     />
                     <Button variant="outline-success" onClick={addReview}>Дадати</Button>
                 </Form>

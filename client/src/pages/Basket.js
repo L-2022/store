@@ -1,45 +1,53 @@
 import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
 import React, {useContext, useEffect} from 'react';
-import DeviceItem from "../components/DeviceItem";
-import DeviceList from "../components/DeviceList";
-
-import {observer} from "mobx-react-lite";
-
+import {Context} from "../index";
+import {checkBasket, login, registration} from "../http/userAPI";
 const Basket = () => {
+    const {basket} = useContext(Context)
+    const click = async () => {
+        try {
 
+            let data= await checkBasket(28);
+            console.log(data)
+            console.log(data.rows)
+        } catch (e) {
+            console.log(e)
+        }
 
-    // const [device, setDevice] = useState({info: []})
-    // const {id} = useParams()
+    }
+    let data= checkBasket(28);
+    console.log(data)
+    // const {basket} = useContext(Context)
+    // console.log(basket.idUser.map(i =>console.log(i)))
+    // useEffect(() => {
+    //     fetchTypes().then(data => device.setTypes(data))
+    //     fetchBrands().then(data => device.setBrands(data))
+    //     fetchDevices(null, null, 4, 5).then(data => {
+    //         device.setDevices(data.rows)
+    //         device.setTotalCount(data.count)
+    //     })
+    // }, [])
     //
     // useEffect(() => {
-    //     fetchOneDevice(id).then(data => setDevice(data))
-    // }, [])
-    // const {baskets} = useContext(Context)
-    // const {device} = useContext(Context)
-    const device = [
-        {id: 1, name: 1, price: 1543,},
-        {id: 2, name: 6, price: 1345,},
-        {id: 3, name: 7, price: 1354,},
-        {id: 4, name: 8, price: 1345,},
-    ];
-    const baskets = [
-        {id: 1, device_id: 1, basket_id: 1,},
-
-    ];
-
+    //     fetchDevices(device.selectedType.id, device.selectedBrand.id, device.page, 15).then(data => {
+    //         device.setDevices(data.rows)
+    //         device.setTotalCount(data.count)
+    //     })
+    // }, [device.page, device.selectedType, device.selectedBrand,])
     return (
         <Container className="mt-4">
-            <Row className="d-flex flex-column m-3">
-                <h1>Параметри</h1>
-                {baskets.map((info, index) =>
-                    <Row key={info.id} style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding: 10}}>
-                        {info.device_id}: {info.basket_id}
-                        {device.map(device =>
-                            <DeviceItem key={info.device_id} device={device.name}/>
-                        )}
-                    </Row>
-                )}
-            </Row>
+            <p>{basket}</p>
+
+            {/*<Row className="d-flex flex-column m-3">*/}
+            {/*    <h1>Basket {basket.length}</h1>*/}
+
+            {/*    {basket.idDevise.map((basket =>*/}
+
+            {/*        <Card>*/}
+            {/*            {basket.device_id}*/}
+            {/*        </Card>)*/}
+            {/*    )}*/}
+            {/*</Row>*/}
         </Container>
     );
 };
@@ -48,7 +56,17 @@ export default Basket;
 
 
 
-
+{/*<Row className="d-flex flex-column m-3">*/}
+{/*    <h1>Параметри</h1>*/}
+{/*    {baskets.map((info, index) =>*/}
+{/*        <Row key={info.id} style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding: 10}}>*/}
+{/*            {info.device_id}: {info.basket_id}*/}
+{/*            {device.map(device =>*/}
+{/*                <DeviceItem key={info.device_id} device={device.name}/>*/}
+{/*            )}*/}
+{/*        </Row>*/}
+{/*    )}*/}
+{/*</Row>*/}
 
 
 

@@ -19,13 +19,15 @@ const UserInfo = sequelize.define('user_info', {
     gender: {type: DataTypes.STRING},
 })
 
-const Basket = sequelize.define('basket', {
+const UsersBasket  = sequelize.define('basket', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    idUser: {type: DataTypes.INTEGER, allowNull: false},
+    idDevise: {type: DataTypes.INTEGER, allowNull: false},
 })
 
-const BasketDevice = sequelize.define('basket_device', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-})
+// const BasketDevice = sequelize.define('basket_device', {
+//     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+// })
 
 const Device = sequelize.define('device', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -58,22 +60,22 @@ const DeviceInfo = sequelize.define('device_info', {
 ////
 const Reviews = sequelize.define('reviews', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    review: {type: DataTypes.STRING},
-    username: {type: DataTypes.STRING},
+    idUser: {type: DataTypes.INTEGER, allowNull: false},
+    review: {type: DataTypes.STRING}
 })
 //////
 const TypeBrand = sequelize.define('type_brand', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
-User.hasOne(Basket)
-Basket.belongsTo(User)
+// User.hasOne(Basket)
+// Basket.belongsTo(User)
 
 User.hasMany(Rating)
 Rating.belongsTo(User)
 
-Basket.hasMany(BasketDevice)
-BasketDevice.belongsTo(Basket)
+// Basket.hasMany(BasketDevice)
+// BasketDevice.belongsTo(Basket)
 
 Type.hasMany(Device)
 Device.belongsTo(Type)
@@ -84,8 +86,8 @@ Device.belongsTo(Brand)
 Device.hasMany(Rating)
 Rating.belongsTo(Device)
 
-Device.hasMany(BasketDevice)
-BasketDevice.belongsTo(Device)
+// Device.hasMany(BasketDevice)
+// BasketDevice.belongsTo(Device)
 
 User.hasOne(UserInfo)
 UserInfo.belongsTo(User)
@@ -107,8 +109,7 @@ Brand.belongsToMany(Type, {through: TypeBrand })
 module.exports = {
     User,
     UserInfo,
-    Basket,
-    BasketDevice,
+    UsersBasket,
     Device,
     Type,
     Brand,

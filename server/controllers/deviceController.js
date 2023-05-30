@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path');
-const {Device, DeviceInfo, Reviews, UserInfo, BasketDevice, User} = require('../models/models')
+const {Device, DeviceInfo, Reviews, UserInfo, UsersBasket, User} = require('../models/models')
 const ApiError = require('../error/ApiError');
 const {where} = require("sequelize");
 class DeviceController {
@@ -53,6 +53,11 @@ class DeviceController {
 
     async getOne(req, res) {
         const {id} = req.params
+        const {idUser} = req.body
+        const basket = await UsersBasket.findAndCountAll({where:{idUser: 2}})
+        // console.log(basket.rows)
+        const baskets = basket.rows
+        // console.log(baskets.forEach(id))
         const device = await Device.findOne(
             {
                 where: {id},
@@ -61,32 +66,31 @@ class DeviceController {
                 ]
 
             });
+        // console.log(device.rows)
+        // console.log(res.json(device))
+
+
         return res.json(device)
     }
 
-    async createReview (req, res, next) {
-        let {review, userId} = req.body
+    // async createReview (req, res, next) {
+    //     const {idUser, review, inBasket} = req.body
+    //     const {id} = req.params
+    //     if (inBasket) {
+    //         const AddBasket = await UsersBasket.create({idUser: idUser, idDevise: id});
+    //         return res.json(AddBasket)
+    //     }
+    //     const DevReview = await Reviews.create({idDevise: id,  review: review, });
+    //     return res.json(DevReview)
+    // }
+
+    async addBasket (req, res) {
+        let {idUser} = req.body
         const {id} = req.params
-        const usersNames = await UserInfo.findAndCountAll({where:{id: userId }})
-        const ElementUsersName = usersNames.rows.map((info) => {
-            return info.userName
-        });
-        var UserName = [...ElementUsersName].shift();
-        const DevReview = await Reviews.create({review, username: UserName, deviceId: id});
 
-        return res.json(DevReview)
-
+        const basket = await UsersBasket.create({idUser: idUser, idDevise: id});
+        return res.json(basket)
     }
-
-    async addBasket (req, res, next) {
-        let {userId} = req.body
-        const {id} = req.params
-        const AddBasket = await BasketDevice.create({basketId: userId, deviceId: id});
-        return res.json(AddBasket)
-
-    }
-
-
 }
 
 module.exports = new DeviceController()

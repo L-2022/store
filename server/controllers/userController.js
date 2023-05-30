@@ -1,7 +1,7 @@
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, UserInfo, Basket} = require('../models/models')
+const {User, UserInfo, Basket, UsersBasket} = require('../models/models')
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
@@ -11,6 +11,7 @@ const generateJwt = (id, email, role) => {
     )
 }
 
+const userID = 0
 class UserController {
     async registration(req, res, next) {
         const {email, password, role, userName} = req.body
@@ -25,7 +26,6 @@ class UserController {
 
         const user = await User.create({email, role, password: hashPassword})
         const userInfo = await UserInfo.create({userName})
-        const basket = await Basket.create({userId: user.id})
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
 
@@ -42,14 +42,22 @@ class UserController {
         if (!comparePassword) {
             return next(ApiError.internal('Помилковий пароль'))
         }
+
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
     }
 
-    async check(req, res, next) {
+    async check(req, res) {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})
     }
+    async getBasket(req, res) {
+        const {idUser} = req.body
+        let basket = await UsersBasket.findAndCountAll({where:{idUser: idUser}}) //id
+        return res.json(basket)
+    }
+
+
 }
 
 module.exports = new UserController()

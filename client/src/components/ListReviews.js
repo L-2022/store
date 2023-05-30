@@ -20,7 +20,6 @@ const ListReviews = () => {
                 <Row key={info.id} style={{background: index % 2 === 0
                         ? 'lightgray' : 'transparent', padding: 10}}>
                     <h6>{info.username}: </h6>
-                    {/*<hr/>*/}
                     <p>{info.review}</p>
                 </Row>
             )}

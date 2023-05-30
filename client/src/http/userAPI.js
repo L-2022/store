@@ -18,3 +18,10 @@ export const check = async () => {
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
+
+export const checkBasket = async (idUser) => {
+    const {data} = await $host.get('api/basket', {idUser: idUser})
+    console.log(data)
+
+    return data
+}
