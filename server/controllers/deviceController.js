@@ -1,85 +1,64 @@
-const uuid = require('uuid')
-const path = require('path');
-const {Device, DeviceInfo, Reviews, UserInfo, Basket} = require('../models/models')
-const ApiError = require('../error/ApiError');
-const {where} = require("sequelize");
-class DeviceController {
-    async create(req, res, next) {
-        try {
-            let {name, price, brandId, typeId, info} = req.body
-            const {img} = req.files
-            let fileName = uuid.v4() + ".jpg"
-            img.mv(path.resolve(__dirname, '..', 'static', fileName))
-            const device = await Device.create({name, price, brandId, typeId, img: fileName});
+const uuid = require("uuid");
+const path = require("path");
+const { Product } = require("../models/models");
+const ApiError = require("../error/ApiError");
+const { where } = require("sequelize");
+class ProductController {
+  async create(req, res, next) {
+    try {
+      let { name, quantity, price, description, rating, typeId, farmId } =
+        req.body;
+      const { img } = req.files;
+      let fileName = uuid.v4() + ".jpg";
+      img.mv(path.resolve(__dirname, "..", "static", fileName));
+      const device = await Product.create({
+        name,
+        quantity,
+        price,
+        description,
+        rating,
+        typeId,
+        farmId,
+        img: fileName,
+      });
 
-            if (info) {
-                info = JSON.parse(info)
-                info.forEach(i =>
-                    DeviceInfo.create({
-                        title: i.title,
-                        description: i.description,
-                        deviceId: device.id
-                    })
-                )
-            }
-
-            return res.json(device)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
-        }
-
+      return res.json(device);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
     }
+  }
 
-    async getAll(req, res) {
-        let {brandId, typeId, limit, page} = req.query
-        page = page || 1
-        limit = limit || 9
-        let offset = page * limit - limit
-        let devices;
-        if (!brandId && !typeId) {
-            devices = await Device.findAndCountAll({limit, offset})
-        }
-        if (brandId && !typeId) {
-            devices = await Device.findAndCountAll({where:{brandId}, limit, offset})
-        }
-        if (!brandId && typeId) {
-            devices = await Device.findAndCountAll({where:{typeId}, limit, offset})
-        }
-        if (brandId && typeId) {
-            devices = await Device.findAndCountAll({where:{typeId, brandId}, limit, offset})
-        }
-        return res.json(devices)
+  async getAll(req, res) {
+    let {brandId, typeId, limit, page} = req.query
+    page = page || 1
+    limit = limit || 9
+    let offset = page * limit - limit
+    let devices;
+    if (!brandId && !typeId) {
+        devices = await Product.findAndCountAll({limit, offset})
     }
-
-    async getOne(req, res) {
-        const {id} = req.params
-        const device = await Device.findOne(
-            {
-                where: {id},
-                include: [{model: DeviceInfo, as: 'info'}, {model: Reviews,  as: 'listReviews'},
-                {model: UserInfo,  as: 'listUser'},
-                ]
-
-            });
-        return res.json(device)
+    if (brandId && !typeId) {
+        devices = await Product.findAndCountAll({where:{brandId}, limit, offset})
     }
-
-    async createReview (req, res, next) {
-        let {review, userId} = req.body
-        const {id} = req.params
-        const DevReview = await Reviews.create({review, userId, deviceId: id});
-        return res.json(DevReview)
-
+    if (!brandId && typeId) {
+        devices = await Product.findAndCountAll({where:{typeId}, limit, offset})
     }
-    async addBasket (req, res) {
-        let {userId} = req.body
-        const {id} = req.params
-        const AddBasket = await Basket.create({userId, deviceId: id});
-        return res.json(AddBasket)
-
+    if (brandId && typeId) {
+        devices = await Product.findAndCountAll({where:{typeId, brandId}, limit, offset})
     }
-
-
+    return res.json(devices)
 }
 
-module.exports = new DeviceController()
+  async getOne(req, res) {
+    const { id } = req.params;
+    const device = await Product.findOne({
+      where: { id },
+    });
+
+    const data = [device];
+
+    return res.json(data);
+  }
+}
+
+module.exports = new ProductController();

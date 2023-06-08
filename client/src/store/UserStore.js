@@ -1,39 +1,31 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class UserStore {
-    constructor() {
-        this._isAuth = false
-        this._user = {}
-        this._baskets = [
-            {id: 1, device_id: '1', basket_id: '1',},
-            {id: 2, device_id: '2', basket_id: '2',},
-            {id: 3, device_id: '1', basket_id: '1',},
-            {id: 4, device_id: '2', basket_id: '2',},
-        ]
-        makeAutoObservable(this)
-    }
-    setIsAuth(bool) {
-        this._isAuth = bool
-    }
-    setUser(user) {
-        this._user = user
-    }
+  constructor() {
+    this._isAuth = false;
+    this._user = {};
+    this._basket = [];
+    makeAutoObservable(this);
+  }
+  setIsAuth(bool) {
+    this._isAuth = bool;
+  }
+  setUser(user) {
+    this._user = user;
+  }
 
-    // setBasket(basket) { // ekhen
-    //     this._baskets = basket
-    // }
+  setBasket(basket) {
+    this._basket = basket;
+  }
 
-    get baskets() {
-        return this._baskets
-    }
+  get basket() {
+    return this._basket;
+  }
 
-    get isAuth() {
-        return this._isAuth
-    }
-    get user() {
-        return this._user
-    }
-
-
-
+  get isAuth() {
+    return this._isAuth;
+  }
+  get user() {
+    return this._user;
+  }
 }
